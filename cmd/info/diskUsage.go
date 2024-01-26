@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/ricochet2200/go-disk-usage/du"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // diskUsageCmd represents the diskUsage command
@@ -15,7 +16,14 @@ var DiskUsageCmd = &cobra.Command{
 	Short: "Returns disk usage ",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		usage := du.NewDiskUsage(".")
+
+		defaultDirectory := "."
+		dir := viper.GetViper().GetString("cmd.info.diskUsage.defaultDirectory")
+		fmt.Println(dir)
+		if dir != "" {
+			defaultDirectory = dir
+		}
+		usage := du.NewDiskUsage(defaultDirectory)
 		fmt.Printf("%v\n", usage.Usage())
 	},
 }
